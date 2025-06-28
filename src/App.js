@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
 
 const mockData = {
   region: 'us-east-1',
@@ -50,6 +51,22 @@ const mockData = {
 };
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('overview');
+
+  // Set setIsLoading to false after 1.5 seconds to give the data some time to be retrieved properly
+  useEffect(() => {
+    setTimeout(() => setIsLoading(false), 1500);
+  }, []);
+
+  if(isLoading) {
+    return (
+      <div className='loading-screen'>
+
+      </div>
+    )
+  }
+
   return (
     <div className="App">
       <header className="App-header">
