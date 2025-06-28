@@ -88,6 +88,16 @@ function App() {
           </div>
         </div>
       </header>
+
+      {/* Navigation */}
+      <nav className='nav-tabs'>
+        {/* If the activeTab is set to overview, className is active, otherwise, className is empty */}
+        <button
+          className={activeTab === 'overview' ? 'active' : ''}
+          onClick={() => setActiveTab('overview')}>
+            Overview
+          </button>
+      </nav>
     </div>
   );
 }

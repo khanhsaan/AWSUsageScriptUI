@@ -107,3 +107,28 @@
   color: #718096;
   font-size: 14px;
 }
+
+/* Navigation */
+.nav-tabs {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0 40px;
+  display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-tabs button {
+  background: none;
+  border: none;
+  padding: 15px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #718096;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3 ease;
+}
+
+.nav-tabs button:hover {
+  color: #4a5568;
+  background: rgba(0, 0, 0, 0.05);
+}
