@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { useEffect, useState } from 'react';
+import { act, useEffect, useState } from 'react';
 
 const mockData = {
   region: 'us-east-1',
@@ -91,12 +91,27 @@ function App() {
 
       {/* Navigation */}
       <nav className='nav-tabs'>
+        {/* "Overview" button */}
         {/* If the activeTab is set to overview, className is active, otherwise, className is empty */}
         <button
           className={activeTab === 'overview' ? 'active' : ''}
           onClick={() => setActiveTab('overview')}>
             Overview
-          </button>
+        </button>
+
+        {/* "Services" button */}
+        <button
+          className={activeTab === 'services' ? 'active': ''}
+          onClick={() => setActiveTab('services')}>
+            Services
+        </button>
+
+        {/* "Cost Breakdown" button */}
+        <button
+          className={activeTab == 'costs' ? 'active': ''}
+          onClick={() => setActiveTab('costs')}>
+            Cost Breakdown
+        </button>
       </nav>
     </div>
   );
