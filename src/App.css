@@ -55,3 +55,15 @@
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
 }
+
+/* Header */
+.app-header{
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 20px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+}
