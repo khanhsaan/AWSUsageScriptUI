@@ -73,7 +73,20 @@ function App() {
     <div className="App">
       {/* Header */}
       <header className="app-header">
-        <div className='header-content'></div>
+        <div className='header-content'>
+          <div className='header-left'>
+            <h1> AWS Resource Monitor</h1>
+            {/* Display region */}
+            <p>Region: <span className='region-badge'>{mockData.region}</span></p>
+          </div>
+          <div className='header-right'>
+            <div className='cost-summary'>
+              {/* toFixed(2) to ensure the number is being displayed with 2 decimal points */}
+              <h2>${mockData.totalCost.toFixed(2)}</h2>
+              <p>Total Cost This Month</p>
+            </div>
+          </div>
+        </div>
       </header>
     </div>
   );
