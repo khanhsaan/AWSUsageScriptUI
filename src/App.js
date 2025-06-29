@@ -70,7 +70,7 @@ function App() {
 
       {/* Main Content */}
       <main className='main-content'>
-        {/* If "Overview" is being selected */}
+        {/* If "Overview" tab is being selected */}
         {activeTab === 'overview' && (
           <div className='overview-grid'>
 
@@ -94,7 +94,7 @@ function App() {
               details={`${mockData.rdsInstances.filter(i => i.status === 'available').length} available`}>
             </ServiceCard>
 
-            {/* Service Card of RDS Databases */}
+            {/* Service Card of S3 Buckets */}
             <ServiceCard
               title={'S3 Buckets'}
               count={mockData.s3Buckets.length}
@@ -106,11 +106,47 @@ function App() {
               // acc is the accumulator that keeps a running total.
               // bucket.size adds the size of each bucket to the total.
               // 0 is the initial value of the accumulator.
-
               details={`${mockData.s3Buckets.reduce((accumulator, bucket) => accumulator + bucket.size, 0).toFixed(1)} GB totals`}>
             </ServiceCard>
+
+            {/* Service Card of Lambda Functions */}
+            <ServiceCard
+              title={'Lamda Functions'}
+              count={mockData.lambdaFunctions.length}
+              icon={'λ'}
+              status={'healthy'}
+              details={`All functions are active`}>
+            </ServiceCard>
+
+            {/* Service Card of Load Balancers */}
+            <ServiceCard
+              title={'Load Balancers'}
+              count={mockData.loadBalancers.length}
+              icon={'⚖️'}
+              status={'healthy'}
+              // Show how many functions are active using filter
+              details={`${mockData.loadBalancers.filter(i => i.state === 'active').length} active`}>
+            </ServiceCard>
+
+            {/* Service Card of Load Balancers */}
+            <ServiceCard
+              title={'EBS Volumes'}
+              count={mockData.loadBalancers.length}
+              icon={'💾'}
+              status={'healthy'}
+              // Show how many functions are active using filter
+              details={`${mockData.ebsVolumes.reduce((accumulator, vol) => accumulator + vol.size, 0).toFixed(1)} GB totals`}>
+            </ServiceCard>
           </div>
-        )}
+        )};
+
+        {/* If Services tab are being selected */}
+        {activeTab === 'services' && (
+          <div className='overview-grid'>
+            <ServiceCard
+              title={"hello"}></ServiceCard>
+          </div>
+        )};
       </main>
     </div>
   );
