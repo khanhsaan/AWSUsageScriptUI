@@ -90,8 +90,24 @@ function App() {
               count={mockData.rdsInstances.length}
               icon={'🗄️'}
               status={'healthy'}
-              // Show how many instances are running using filter
+              // Show how many databases are available using filter
               details={`${mockData.rdsInstances.filter(i => i.status === 'available').length} available`}>
+            </ServiceCard>
+
+            {/* Service Card of RDS Databases */}
+            <ServiceCard
+              title={'S3 Buckets'}
+              count={mockData.s3Buckets.length}
+              icon={'🪣'}
+              status={'healthy'}
+
+              // .reduce((acc, bucket) => acc + bucket.size, 0):
+              // The reduce function loops over all elements in the array.
+              // acc is the accumulator that keeps a running total.
+              // bucket.size adds the size of each bucket to the total.
+              // 0 is the initial value of the accumulator.
+
+              details={`${mockData.s3Buckets.reduce((accumulator, bucket) => accumulator + bucket.size, 0).toFixed(1)} GB totals`}>
             </ServiceCard>
           </div>
         )}
