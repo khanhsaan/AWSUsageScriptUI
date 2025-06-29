@@ -128,7 +128,7 @@ function App() {
               details={`${mockData.loadBalancers.filter(i => i.state === 'active').length} active`}>
             </ServiceCard>
 
-            {/* Service Card of Load Balancers */}
+            {/* Service Card of EBS Volumes*/}
             <ServiceCard
               title={'EBS Volumes'}
               count={mockData.loadBalancers.length}
