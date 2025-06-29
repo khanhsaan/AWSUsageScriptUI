@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { act, useEffect, useState } from 'react';
 import mockData from './constants/MockData';
+import ServiceDetail from './components/ServiceDetails.js'
 
 
 function App() {
@@ -143,10 +144,35 @@ function App() {
         {/* If Services tab are being selected */}
         {activeTab === 'services' && (
           <div className='overview-grid'>
+            {/* Detail for EC2 Instances */}
             <ServiceDetail
               title={"EC2 Instances"}
               data={mockData.ec2Instances}
               type={'ec2'}></ServiceDetail>
+
+            {/* Detail for RDS Databases */}
+            <ServiceDetail
+              title={'RDS Databases'}
+              data={mockData.rdsInstances}
+              type={'rds'}></ServiceDetail>
+
+            {/* Detail for S3 Buckets */}
+            <ServiceDetail
+              title={'S3 Buckets'}
+              data={mockData.s3Buckets}
+              type={'s3'}></ServiceDetail>
+
+            {/* Detail for S3 Buckets */}
+            <ServiceDetail
+              title={'Lambda Functions'}
+              data={mockData.lambdaFunctions}
+              type={'lambda'}></ServiceDetail>
+
+            {/* Detail for Load Balancers */}
+            <ServiceDetail
+              title={'Load Balancers'}
+              data={mockData.loadBalancers}
+              type={'elb'}></ServiceDetail>
           </div>
         )};
       </main>
@@ -197,39 +223,6 @@ function ServiceCard({
   );
 }
 
-function ServiceDetail({
-  title,
-  data,
-  type
-}) {
-  // Create a dynamic function to be returned
-  const renderContent = () => {
-    if(!data || data.length ===  0){
-      return <p className='no-data'>No {title.toLowerCase()} found</p>
-    }
 
-    switch(type) {
-      case 'ec2':
-        return data.map((instance, index) => (
-          <div key={index} className='detail-item'>
-            <strong>{instance.id}</strong>
-            <span>Type: {instance.type}</span>
-            <span>Status: <span className={`status ${instance.status}`}>{instance.status}</span></span>
-          </div>
-        ))
-    }
-  };
-
-  return (
-    <div className='service-detail-card'>
-      {/* Return the title */}
-      <h3>{title}</h3>
-      {/* Return the dynamic renderContent() and its style */}
-      <div className='detail-content'>
-        {renderContent()}
-      </div>
-    </div>
-  )
-}
 
 export default App;
