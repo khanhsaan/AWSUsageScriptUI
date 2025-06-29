@@ -242,9 +242,9 @@ body {
 }
 
 .detail-item {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   padding: 12px;
   background: #f7fafc;
   border-radius: 8px;

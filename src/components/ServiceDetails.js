@@ -65,6 +65,7 @@ function ServiceDetail({
               <span>Size: {ebs.size}</span>
               <span>Type: {ebs.type}</span>
               <span>State: <span className={`status ${ebs.state}`}>{ebs.state}</span></span>
+              <span>{ebs.attachedTo ? `Attached to: ${ebs.attachedTo}` : ''}</span>
             </div>
           ));
       }

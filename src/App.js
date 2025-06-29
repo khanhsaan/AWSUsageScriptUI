@@ -173,6 +173,12 @@ function App() {
               title={'Load Balancers'}
               data={mockData.loadBalancers}
               type={'elb'}></ServiceDetail>
+
+            {/* Detail for 'EBS Volumes */}
+            <ServiceDetail
+              title={'EBS Volumes'}
+              data={mockData.ebsVolumes}
+              type={'ebs'}></ServiceDetail>
           </div>
         )};
       </main>
