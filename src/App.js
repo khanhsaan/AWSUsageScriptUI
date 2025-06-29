@@ -109,16 +109,27 @@ function ServiceCard({
   return (
     <div className='service-card'>
       <div className = 'card-header'>
+
         {/* Display the passed icon for the corresponding service */}
         <span className='service-icon'>{icon}</span>
+
         {/* Display the passed title with style */}
         <div className='card-title'>
           <h3>{title}</h3>
-          <span></span>
+          {/* Display the corresponding status with style */}
+          <span className = {`status-indicator ${status}`}></span>
         </div>
       </div>
+      
+      {/* Display the card content with style */}
+      <div className='card-content'>
+        {/* Display the total number of instances */}
+        <div className='count'>{count}</div>
+        {/* Display how many services are running */}
+        <div className='details'>{details}</div>
+      </div>
     </div>
-  )
+  );
 }
 
 export default App;
