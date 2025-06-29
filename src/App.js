@@ -73,6 +73,8 @@ function App() {
         {/* If "Overview" is being selected */}
         {activeTab === 'overview' && (
           <div className='overview-grid'>
+
+            {/* Service Card of EC2 Instances */}
             <ServiceCard
               title={'EC2 Instances'}
               count={mockData.ec2Instances.length}
@@ -80,7 +82,16 @@ function App() {
               status={'healthy'}
               // Show how many instances are running using filter
               details={`${mockData.ec2Instances.filter(i => i.status === 'running').length} running`}>
+            </ServiceCard>
 
+            {/* Service Card of RDS Databases */}
+            <ServiceCard
+              title={'RDS Databases'}
+              count={mockData.rdsInstances.length}
+              icon={'🗄️'}
+              status={'healthy'}
+              // Show how many instances are running using filter
+              details={`${mockData.rdsInstances.filter(i => i.status === 'available').length} available`}>
             </ServiceCard>
           </div>
         )}
