@@ -143,8 +143,10 @@ function App() {
         {/* If Services tab are being selected */}
         {activeTab === 'services' && (
           <div className='overview-grid'>
-            <ServiceCard
-              title={"hello"}></ServiceCard>
+            <ServiceDetail
+              title={"EC2 Instances"}
+              data={mockData.ec2Instances}
+              type={'ec2'}></ServiceDetail>
           </div>
         )};
       </main>
@@ -193,6 +195,41 @@ function ServiceCard({
       </div>
     </div>
   );
+}
+
+function ServiceDetail({
+  title,
+  data,
+  type
+}) {
+  // Create a dynamic function to be returned
+  const renderContent = () => {
+    if(!data || data.length ===  0){
+      return <p className='no-data'>No {title.toLowerCase()} found</p>
+    }
+
+    switch(type) {
+      case 'ec2':
+        return data.map((instance, index) => (
+          <div key={index} className='detail-item'>
+            <strong>{instance.id}</strong>
+            <span>Type: {instance.type}</span>
+            <span>Status: <span className={`status ${instance.status}`}>{instance.status}</span></span>
+          </div>
+        ))
+    }
+  };
+
+  return (
+    <div className='service-detail-card'>
+      {/* Return the title */}
+      <h3>{title}</h3>
+      {/* Return the dynamic renderContent() and its style */}
+      <div className='detail-content'>
+        {renderContent()}
+      </div>
+    </div>
+  )
 }
 
 export default App;
