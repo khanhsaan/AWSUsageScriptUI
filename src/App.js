@@ -3,6 +3,7 @@ import './App.css';
 import { act, useEffect, useState } from 'react';
 import mockData from './constants/MockData';
 import ServiceDetail from './components/ServiceDetails.js'
+import CostBar from './components/CostBar.js'
 
 
 function App() {
@@ -139,7 +140,7 @@ function App() {
               details={`${mockData.ebsVolumes.reduce((accumulator, vol) => accumulator + vol.size, 0).toFixed(1)} GB totals`}>
             </ServiceCard>
           </div>
-        )};
+        )}
 
         {/* If Services tab are being selected */}
         {activeTab === 'services' && (
@@ -186,11 +187,26 @@ function App() {
               data={mockData.elasticIPs}
               type={'eip'}></ServiceDetail>
           </div>
-        )};
+        )}
+
+        {activeTab === 'costs' && (
+          <div className='costs-section'>
+            <div className='cost-chart'>
+              <h3>Cost Breakdown by Service</h3>
+              {mockData.serviceCosts.map((service, index) => (
+                <CostBar
+                  service={service.service}
+                  total={mockData.serviceCosts.reduce((acc, service) => acc + service.cost, 0)}>
+                </CostBar>
+              ))}
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
 }
+
 
 // Service Card Component
 function ServiceCard({
