@@ -68,6 +68,21 @@ function ServiceDetail({
               <span>{ebs.attachedTo ? `Attached to: ${ebs.attachedTo}` : ''}</span>
             </div>
           ));
+
+          case 'eip':
+            return data.map((eips, index) => (
+              <div key={index} className='detail-item'>
+                <strong>{eips.ip}</strong>
+                <span>Size: {eips.size}</span>
+                <span>Type: {eips.type}</span>
+                <span>State: <span className={`status ${eips.status}`}>{eips.status}</span></span>
+                <span>{eips.instanceId ? `Instance: ${eips.instanceId}}`: ''}</span>
+                <span className="warning">{!eips.instanceId ? `⚠️ Unattached (incurring charges)`: ''}</span>
+              </div>
+            ));
+          
+          default:
+            return <p>Data not available</p>
       }
     };
   
