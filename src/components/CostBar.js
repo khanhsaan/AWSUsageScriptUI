@@ -2,9 +2,9 @@ function CostBar({
     service, 
     total}) {
     
-    const serviceName = service?.service ?? 'Unknown service';
-    const safeTotal = total ?? 1;
-    const cost = service?.cost ?? 1;
+    let serviceName = service?.service ?? 'Unknown service';
+    let safeTotal = total ?? 1;
+    let cost = service?.cost ?? 1;
     const percentage = (cost / safeTotal) * 100;
     return (
         <div className="cost-bar-container">

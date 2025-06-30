@@ -195,8 +195,9 @@ function App() {
               <h3>Cost Breakdown by Service</h3>
               {mockData.serviceCosts.map((service, index) => (
                 <CostBar
-                  service={service.service}
-                  total={mockData.serviceCosts.reduce((acc, service) => acc + service.cost, 0)}>
+                  key={index}
+                  service={service}
+                  total={mockData.totalCost}>
                 </CostBar>
               ))}
             </div>
