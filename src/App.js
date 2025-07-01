@@ -158,13 +158,13 @@ function App() {
             {/* Detail for EC2 Instances */}
             <ServiceDetail
               title={"EC2 Instances"}
-              data={mockData.ec2Instances}
+              data={ec2Data.ec2Instances}
               type={'ec2'}></ServiceDetail>
 
             {/* Detail for RDS Databases */}
             <ServiceDetail
               title={'RDS Databases'}
-              data={mockData.rdsInstances}
+              data={rdsData.rdsInstances}
               type={'rds'}></ServiceDetail>
 
             {/* Detail for S3 Buckets */}
