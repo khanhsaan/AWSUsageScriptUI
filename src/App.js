@@ -13,7 +13,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('overview');
 
   // Retrieve the values from useMockOrRealData.js
-  const[ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, isLoading] = useMockOrRealData();
+  const[ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, errorS3, s3Data, isLoading] = useMockOrRealData();
 
   // Set setIsLoading to false after 1.5 seconds to give the data some time to be retrieved properly
   // useEffect(() => {
@@ -108,7 +108,7 @@ function App() {
             {/* Service Card of S3 Buckets */}
             <ServiceCard
               title={'S3 Buckets'}
-              count={mockData.s3Buckets.length}
+              count={s3Data.s3Buckets.length}
               icon={'🪣'}
               status={'healthy'}
 
@@ -117,7 +117,7 @@ function App() {
               // acc is the accumulator that keeps a running total.
               // bucket.size adds the size of each bucket to the total.
               // 0 is the initial value of the accumulator.
-              details={`${mockData.s3Buckets.reduce((accumulator, bucket) => accumulator + bucket.size, 0).toFixed(1)} GB totals`}>
+              details={`${s3Data.s3Buckets.reduce((accumulator, bucket) => accumulator + bucket.size, 0).toFixed(1)} GB totals`}>
             </ServiceCard>
 
             {/* Service Card of Lambda Functions */}
@@ -169,7 +169,7 @@ function App() {
             {/* Detail for S3 Buckets */}
             <ServiceDetail
               title={'S3 Buckets'}
-              data={mockData.s3Buckets}
+              data={s3Data.s3Buckets}
               type={'s3'}></ServiceDetail>
 
             {/* Detail for S3 Buckets */}

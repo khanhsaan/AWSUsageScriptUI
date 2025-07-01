@@ -34,7 +34,7 @@ function ServiceDetail({
           return data.map((bucket, index) => (
             <div key={index} className='detail-item'>
               <strong>{bucket.name}</strong>
-              <span>Size: {bucket.size}</span>
+              <span>Size: {bucket?.size ?? 'Undefined'}</span>
             </div>
           ));
   

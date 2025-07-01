@@ -17,6 +17,10 @@ const useMockOrRealData = () => {
     const[rdsData, setRDSData] = useState(null);
     const[errorRDS, setErrorRDS] = useState(null);
 
+    // S3
+    const[s3Data, sets3Data] = useState(null);
+    const[errorsS3, setErrorS3] = useState(null);
+
     // since set in useState is asynchronous, use useEffect
     useEffect(() => {
         if (rdsData) {
@@ -54,6 +58,18 @@ const useMockOrRealData = () => {
             console.log('COST data has been set UNsuccessfully');
         }
     }, [costData]);
+
+    useEffect(() => {
+        if(s3Data) {
+            console.log('S3 data has been set successfully');
+
+            if(s3Data.s3Buckets) {
+                console.log('S3 instance can be found')
+            }
+        } else {
+            console.log('S3 data has been set UNsuccessfully');
+        }
+    })
 
     const[isLoading, setIsLoading] = useState(true);
     // const[useMockData, setUseMockData] = useState(false);
@@ -96,6 +112,7 @@ const useMockOrRealData = () => {
                 // else use the real data
                 setEC2Data(responseEC2.data);
             }
+
             // RDS API calls ============================
 
             // response = {
@@ -123,6 +140,7 @@ const useMockOrRealData = () => {
                 // else use the real data
                 setRDSData(responseRDS.data);
             }
+
             // COST API calls ===============================
 
             // response = {
@@ -152,6 +170,30 @@ const useMockOrRealData = () => {
 
                 // console.log(rdsData?.rdsInstances?.length);
             }
+
+            // S3 API calls ====================
+
+            console.log('Requesting S3 instances');
+            const responseS3 = await apiService.getS3();
+
+            if(responseS3.data) {
+                console.log('There is S3 response being retrieved');
+                console.log(responseS3.data.s3Buckets);
+            } else {
+                console.log('There is NO S3 reponse being retrieved');
+            }
+
+            // If there is error in the returned call
+            if(responseS3.error){
+                console.warn('S3 API call failed, using mock data', responseS3.error);
+
+                // Use mock data
+                sets3Data(mockData);
+            } else {
+                console.log('No error, using real S3 data');
+                sets3Data(responseS3.data);
+            }
+
         } catch (err) {
             console.log('Failed to fetch AWS data: ', err);
             console.log('API call failed, using mock data');
@@ -159,7 +201,7 @@ const useMockOrRealData = () => {
             setEC2Data(mockData);
             setCostData(mockData);
             setRDSData(mockData)
-            
+
         } finally {
             setIsLoading(false);
         }
@@ -171,7 +213,7 @@ const useMockOrRealData = () => {
     }, []);
 
     // Return the values
-    return [ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, isLoading];
+    return [ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, errorsS3, s3Data, isLoading];
 }
 
 export default useMockOrRealData;
