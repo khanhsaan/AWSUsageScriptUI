@@ -13,6 +13,7 @@ const useMockOrRealData = () => {
     const[rdsData, setRDSData] = useState(null);
     const[errorRDS, setErrorRDS] = useState(null);
 
+    // since set in useState is asynchronous, use useEffect
     useEffect(() => {
         if (rdsData) {
             console.log('RDS data has been set successfully');
@@ -25,12 +26,29 @@ const useMockOrRealData = () => {
         }
     }, [rdsData]);
 
+
+    useEffect(() => {
+        if (ec2Data) {
+            console.log('EC2 data has been set successfully');
+
+            if(ec2Data.ec2Instances) {
+                console.log('EC2 instances can be found')
+            }
+        } else {
+            console.log('EC2 data has been set UNsuccessfully');
+        }
+    }, [rdsData]);
+
     const[isLoading, setIsLoading] = useState(true);
     // const[useMockData, setUseMockData] = useState(false);
 
     const fetchAWSData = async () => {
         // Turn on the loading state
         setIsLoading(true);
+
+        // Loading effect last 1.5 secs
+        setTimeout(() => setIsLoading(false), 1500);
+
         // There is no error initially
         setErrorEC2(null);
         setErrorRDS(null);
@@ -41,7 +59,15 @@ const useMockOrRealData = () => {
             //      data, error
             // }
             console.log('Requesting EC2 instances');
-            const responseEC2 = apiService.getEC2();
+            const responseEC2 = await apiService.getEC2();
+
+            if(responseEC2.data) {
+                console.log('There is EC2 response being retrieved');
+                console.log(responseEC2.data.ec2Instances);
+            
+            } else {
+                console.log('There is NO EC2 response being retrieved')
+            }
             
             // If threre is error in the returned call
             if(responseEC2.error){
