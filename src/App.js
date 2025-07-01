@@ -14,7 +14,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('overview');
 
   // Retrieve the values from useMockOrRealData.js
-  const[ec2Data, errorEC2, isLoading] = useMockOrRealData();
+  const[ec2Data, errorEC2, rdsData, errorRDS, isLoading] = useMockOrRealData();
 
   // Set setIsLoading to false after 1.5 seconds to give the data some time to be retrieved properly
   // useEffect(() => {
@@ -93,17 +93,17 @@ function App() {
               icon={'💻'}
               status={'healthy'}
               // Show how many instances are running using filter
-              details={`${ec2Data?.ec2Instances?.filter(i => i.status === 'running').length || '0'} running`}>
+              details={`${ec2Data?.ec2Instances?.filter(i => i.status === 'running').length || 0} running`}>
             </ServiceCard>
 
             {/* Service Card of RDS Databases */}
             <ServiceCard
               title={'RDS Databases'}
-              count={mockData.rdsInstances.length}
+              count={rdsData?.rdsInstances?.length || 0}
               icon={'🗄️'}
               status={'healthy'}
               // Show how many databases are available using filter
-              details={`${mockData.rdsInstances.filter(i => i.status === 'available').length} available`}>
+              details={`${rdsData?.rdsInstances?.filter(i => i.status === 'available').length || 0} available`}>
             </ServiceCard>
 
             {/* Service Card of S3 Buckets */}

@@ -16,6 +16,9 @@ const apiCall = async(endpoint, options = {}) => {
 
         const data = await response.json();
         
+        // Debug
+        // console.log(data);
+
         return {
             data,
             error: null,
@@ -41,7 +44,7 @@ const awsResourceApi = {
         return await apiCall('/rds');
     },
 
-    // Get S3
+    // Get RDS
     getS3: async () => {
         return await apiCall('/s3');
     },
