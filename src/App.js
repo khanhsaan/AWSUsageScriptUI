@@ -4,18 +4,22 @@ import { act, useEffect, useState } from 'react';
 import mockData from './constants/MockData';
 import ServiceDetail from './components/ServiceDetails.js'
 import CostBar from './components/CostBar.js'
+import useMockOrRealData from './api/useMockOrRealData.js';
 
 // Base URL
 const API_BASE_URL = process.env.API_BASE_URL ?? "http://127.0.0.1:8000/api"
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
 
+  // Retrieve the values from useMockOrRealData.js
+  const[ec2Data, errorEC2, isLoading] = useMockOrRealData();
+
   // Set setIsLoading to false after 1.5 seconds to give the data some time to be retrieved properly
-  useEffect(() => {
-    setTimeout(() => setIsLoading(false), 1500);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => setIsLoading(false), 1500);
+  // }, []);
 
   // if the loading state is true, render loading screen and loading wheel
   if(isLoading) {
@@ -26,6 +30,10 @@ function App() {
       </div>
     )
   }
+
+  // if(errorEC2 || ec2Data){
+  //   console.log("Error getting EC2 instances or ")
+  // }
 
   return (
     <div className="App">
@@ -81,11 +89,11 @@ function App() {
             {/* Service Card of EC2 Instances */}
             <ServiceCard
               title={'EC2 Instances'}
-              count={mockData.ec2Instances.length}
+              count={ec2Data?.ec2Instances?.length || 0}
               icon={'💻'}
               status={'healthy'}
               // Show how many instances are running using filter
-              details={`${mockData.ec2Instances.filter(i => i.status === 'running').length} running`}>
+              details={`${ec2Data?.ec2Instances?.filter(i => i.status === 'running').length || '0'} running`}>
             </ServiceCard>
 
             {/* Service Card of RDS Databases */}

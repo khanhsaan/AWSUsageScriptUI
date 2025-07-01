@@ -15,7 +15,7 @@ const apiCall = async(endpoint, options = {}) => {
         }
 
         const data = await response.json();
-
+        
         return {
             data,
             error: null,
@@ -31,11 +31,6 @@ const apiCall = async(endpoint, options = {}) => {
 }
 
 const awsResourceApi = {
-    // Get EC2 instances
-    getEC2Instances: async () => {
-        return await apiCall('/ec2');
-    },
-
     // get AWS Cost
     getAWSCosts: async () => {
         return apiCall('/cost')
