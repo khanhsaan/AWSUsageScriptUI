@@ -10,11 +10,10 @@ import useMockOrRealData from './api/useMockOrRealData.js';
 const API_BASE_URL = process.env.API_BASE_URL ?? "http://127.0.0.1:8000/api"
 
 function App() {
-  // const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
 
   // Retrieve the values from useMockOrRealData.js
-  const[ec2Data, errorEC2, rdsData, errorRDS, isLoading] = useMockOrRealData();
+  const[ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, isLoading] = useMockOrRealData();
 
   // Set setIsLoading to false after 1.5 seconds to give the data some time to be retrieved properly
   // useEffect(() => {
@@ -48,7 +47,7 @@ function App() {
           <div className='header-right'>
             <div className='cost-summary'>
               {/* toFixed(2) to ensure the number is being displayed with 2 decimal points */}
-              <h2>${mockData.totalCost.toFixed(2)}</h2>
+              <h2>${costData.totalCost.toFixed(2)}</h2>
               <p>Total Cost This Month</p>
             </div>
           </div>

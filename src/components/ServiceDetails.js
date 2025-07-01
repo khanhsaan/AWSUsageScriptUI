@@ -26,7 +26,7 @@ function ServiceDetail({
               <span>Engine: {db.engine}</span>
               <span>Class: {db.class}</span>
               <span>Storage: {db.storage}</span>
-              <span>StatusL <span className={`status ${db.status}`}>{db.status}</span></span>
+              <span>Status: <span className={`status ${db.status}`}>{db.status}</span></span>
             </div>
           ));
   

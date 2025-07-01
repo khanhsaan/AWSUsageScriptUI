@@ -36,7 +36,7 @@ const apiCall = async(endpoint, options = {}) => {
 const awsResourceApi = {
     // get AWS Cost
     getAWSCosts: async () => {
-        return apiCall('/cost')
+        return apiCall('/costs')
     },
 
     // Get EC2 instances
