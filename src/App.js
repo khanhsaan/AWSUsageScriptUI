@@ -13,7 +13,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('overview');
 
   // Retrieve the values from useMockOrRealData.js
-  const[ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, errorS3, s3Data, isLoading] = useMockOrRealData();
+  const[ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, isLoading] = useMockOrRealData();
 
   // Set setIsLoading to false after 1.5 seconds to give the data some time to be retrieved properly
   // useEffect(() => {
@@ -123,7 +123,7 @@ function App() {
             {/* Service Card of Lambda Functions */}
             <ServiceCard
               title={'Lamda Functions'}
-              count={mockData.lambdaFunctions.length}
+              count={lambdaData?.lambdaFunctions?.length || 0}
               icon={'λ'}
               status={'healthy'}
               details={`All functions are active`}>
@@ -175,7 +175,7 @@ function App() {
             {/* Detail for S3 Buckets */}
             <ServiceDetail
               title={'Lambda Functions'}
-              data={mockData.lambdaFunctions}
+              data={lambdaData.lambdaFunctions}
               type={'lambda'}></ServiceDetail>
 
             {/* Detail for Load Balancers */}

@@ -21,6 +21,10 @@ const useMockOrRealData = () => {
     const[s3Data, sets3Data] = useState(null);
     const[errorsS3, setErrorS3] = useState(null);
 
+    // Lambda
+    const[lambdaData, setLambdaData] = useState(null);
+    const[errorLambda, setErrorLambda] = useState(null);
+
     // since set in useState is asynchronous, use useEffect
     useEffect(() => {
         if (rdsData) {
@@ -69,7 +73,20 @@ const useMockOrRealData = () => {
         } else {
             console.log('S3 data has been set UNsuccessfully');
         }
-    })
+    }, [s3Data]);
+
+    useEffect(() => {
+        if(lambdaData) {
+            console.log('Lambda data has been set successfully');
+
+            if(lambdaData.lambdaFunctions) {
+                console.log('S3 instance can be found')
+            }
+        } else {
+            console.log('Lambda data has been set UNsuccessfully');
+        }
+    }, [lambdaData]);
+
 
     const[isLoading, setIsLoading] = useState(true);
     // const[useMockData, setUseMockData] = useState(false);
@@ -194,6 +211,26 @@ const useMockOrRealData = () => {
                 sets3Data(responseS3.data);
             }
 
+            // Lambda API calls ===================
+            console.log('Requesting Lambda functions...');
+            const responseLambda = await apiService.getLambda();
+            
+            if(responseLambda.data) {
+                console.log('There is Lambda response being retrieved');
+                console.log(responseLambda.data.lambdaFunctions);
+            } else {
+                console.log('There is NO Lambda response being retrieved');
+            }
+
+            if(responseLambda.error) {
+                console.warn('Lambda API call failed, using mock data', responseLambda.error);
+
+                setLambdaData(mockData);
+            } else {
+                console.log('No error, using real Lambda data');
+                setLambdaData(responseLambda.data);
+            }
+
         } catch (err) {
             console.log('Failed to fetch AWS data: ', err);
             console.log('API call failed, using mock data');
@@ -213,7 +250,7 @@ const useMockOrRealData = () => {
     }, []);
 
     // Return the values
-    return [ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, errorsS3, s3Data, isLoading];
+    return [ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, isLoading];
 }
 
 export default useMockOrRealData;
