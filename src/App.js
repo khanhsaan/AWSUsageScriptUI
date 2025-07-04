@@ -13,7 +13,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('overview');
 
   // Retrieve the values from useMockOrRealData.js
-  const[regionData, errorRegion, ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, isLoading] = useMockOrRealData();
+  const[regionData, errorRegion, ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, EBSData, errorEBS, EIPsData, errorEIPs, isLoading] = useMockOrRealData();
 
   // Set setIsLoading to false after 1.5 seconds to give the data some time to be retrieved properly
   // useEffect(() => {
@@ -142,11 +142,11 @@ function App() {
             {/* Service Card of EBS Volumes*/}
             <ServiceCard
               title={'EBS Volumes'}
-              count={mockData.loadBalancers.length}
+              count={EBSData?.ebsVolumes?.length || 0}
               icon={'💾'}
               status={'healthy'}
               // Show how many functions are active using filter
-              details={`${mockData.ebsVolumes.reduce((accumulator, vol) => accumulator + vol.size, 0).toFixed(1)} GB totals`}>
+              details={`${EBSData?.ebsVolumes?.reduce((accumulator, vol) => accumulator + vol.size, 0).toFixed(1) || 0} GB totals`}>
             </ServiceCard>
           </div>
         )}
@@ -187,13 +187,13 @@ function App() {
             {/* Detail for EBS Volumes */}
             <ServiceDetail
               title={'EBS Volumes'}
-              data={mockData.ebsVolumes}
+              data={EBSData.ebsVolumes}
               type={'ebs'}></ServiceDetail>
 
             {/* Detail for Elastic IPs*/}
             <ServiceDetail
               title={'Elastic IPs'}
-              data={mockData.elasticIPs}
+              data={EIPsData.elasticIPs}
               type={'eip'}></ServiceDetail>
           </div>
         )}

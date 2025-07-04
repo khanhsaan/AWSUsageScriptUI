@@ -31,6 +31,14 @@ const useMockOrRealData = () => {
     const[loadBalancersData, setLoadBalancersData] = useState(null);
     const[errorLoadBalancers, setErrorLoadBalancers] = useState(null);
 
+    // Load balancers
+    const[EBSData, setEBSData] = useState(null);
+    const[errorEBS, setErrorEBS] = useState(null);
+
+    // EIPs
+    const[EIPsData, setEIPsData] = useState(null);
+    const[errorEIPs, setErrorEIPs] = useState(null);
+
     // since set in useState is asynchronous, use useEffect
     useEffect(() => {
         if (rdsData) {
@@ -117,6 +125,29 @@ const useMockOrRealData = () => {
         }
     }, [regionData]);
 
+    useEffect(() => {
+        if(EBSData) {
+            console.log('EBS data has been set successfully');
+
+            if(EBSData.ebsVolumes) {
+                console.log('EBS instance can be found')
+            }
+        } else {
+            console.log('REGION data has been set UNsuccessfully');
+        }
+    }, [EBSData]);
+
+    useEffect(() => {
+        if(EIPsData) {
+            console.log('EIPs data has been set successfully');
+
+            if(EIPsData.elasticIPs) {
+                console.log('EBS instance can be found')
+            }
+        } else {
+            console.log('REGION data has been set UNsuccessfully');
+        }
+    }, [EIPsData]);
 
     const[isLoading, setIsLoading] = useState(true);
     // const[useMockData, setUseMockData] = useState(false);
@@ -130,6 +161,9 @@ const useMockOrRealData = () => {
         setErrorRDS(null);
         setErrorCost(null);
         setErrorRegion(null);
+        setErrorEIPs(null);
+        setErrorCost(null);
+        setErrorEBS(null);
 
         // EC2 API calls
         try {
@@ -313,6 +347,48 @@ const useMockOrRealData = () => {
                 setLoadBalancersData(responseELB.data);
             }
 
+            // EBS API calls ===================
+
+            console.log('Requesting EBS Volumes...');
+            const responseEBS = await apiService.getEBS();
+            
+            if(responseEBS.data) {
+                console.log('There is EBS response being retrieved');
+                console.log(responseEBS.data.ebsVolumes);
+            } else {
+                console.log('There is NO EBS response being retrieved');
+            }
+
+            if(responseEBS.error) {
+                console.warn('EBS API call failed, using mock data', responseEBS.error);
+
+                setEBSData(mockData);
+            } else {
+                console.log('No error, using real EBS data');
+                setEBSData(responseEBS.data);
+            }
+
+            // EIPs API calls ===================
+
+            console.log('Requesting EIPs...');
+            const responseEIPs = await apiService.getEIP();
+            
+            if(responseEIPs.data) {
+                console.log('There is EIPs response being retrieved');
+                console.log(responseEIPs.data.elasticIPs);
+            } else {
+                console.log('There is NO EIPs response being retrieved');
+            }
+
+            if(responseEIPs.error) {
+                console.warn('EIPs API call failed, using mock data', responseEIPs.error);
+
+                setEIPsData(mockData);
+            } else {
+                console.log('No error, using real EIPs data');
+                setEIPsData(responseEIPs.data);
+            }
+
         } catch (err) {
             console.log('Failed to fetch AWS data: ', err);
             console.log('API call failed, using mock data');
@@ -332,7 +408,7 @@ const useMockOrRealData = () => {
     }, []);
 
     // Return the values
-    return [regionData, errorRegion, ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, isLoading];
+    return [regionData, errorRegion, ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, EBSData, errorEBS, EIPsData, errorEIPs, isLoading];
 }
 
 export default useMockOrRealData;
