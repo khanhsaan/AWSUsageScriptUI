@@ -13,7 +13,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('overview');
 
   // Retrieve the values from useMockOrRealData.js
-  const[ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, isLoading] = useMockOrRealData();
+  const[ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, isLoading] = useMockOrRealData();
 
   // Set setIsLoading to false after 1.5 seconds to give the data some time to be retrieved properly
   // useEffect(() => {
@@ -132,11 +132,11 @@ function App() {
             {/* Service Card of Load Balancers */}
             <ServiceCard
               title={'Load Balancers'}
-              count={mockData.loadBalancers.length}
+              count={loadBalancersData?.loadBalancers?.length || 0}
               icon={'⚖️'}
               status={'healthy'}
               // Show how many functions are active using filter
-              details={`${mockData.loadBalancers.filter(i => i.state === 'active').length} active`}>
+              details={`${loadBalancersData?.loadBalancers?.filter(i => i.state === 'active').length || 0} active`}>
             </ServiceCard>
 
             {/* Service Card of EBS Volumes*/}
@@ -181,7 +181,7 @@ function App() {
             {/* Detail for Load Balancers */}
             <ServiceDetail
               title={'Load Balancers'}
-              data={mockData.loadBalancers}
+              data={loadBalancersData.loadBalancers}
               type={'elb'}></ServiceDetail>
 
             {/* Detail for EBS Volumes */}

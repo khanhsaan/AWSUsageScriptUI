@@ -25,6 +25,10 @@ const useMockOrRealData = () => {
     const[lambdaData, setLambdaData] = useState(null);
     const[errorLambda, setErrorLambda] = useState(null);
 
+    // Load balancers
+    const[loadBalancersData, setLoadBalancersData] = useState(null);
+    const[errorLoadBalancers, setErrorLoadBalancers] = useState(null);
+
     // since set in useState is asynchronous, use useEffect
     useEffect(() => {
         if (rdsData) {
@@ -86,6 +90,18 @@ const useMockOrRealData = () => {
             console.log('Lambda data has been set UNsuccessfully');
         }
     }, [lambdaData]);
+
+    useEffect(() => {
+        if(loadBalancersData) {
+            console.log('LOAD BALANCERS data has been set successfully');
+
+            if(loadBalancersData.lambdaFunctions) {
+                console.log('LOAD BALANCERS instance can be found')
+            }
+        } else {
+            console.log('LOAD BALANCERS data has been set UNsuccessfully');
+        }
+    }, [loadBalancersData]);
 
 
     const[isLoading, setIsLoading] = useState(true);
@@ -211,7 +227,7 @@ const useMockOrRealData = () => {
                 sets3Data(responseS3.data);
             }
 
-            // Lambda API calls ===================
+            // LAMBDA API calls ===================
             console.log('Requesting Lambda functions...');
             const responseLambda = await apiService.getLambda();
             
@@ -229,6 +245,27 @@ const useMockOrRealData = () => {
             } else {
                 console.log('No error, using real Lambda data');
                 setLambdaData(responseLambda.data);
+            }
+
+            // ELB API calls ===================
+
+            console.log('Requesting ELB functions...');
+            const responseELB = await apiService.getELB();
+            
+            if(responseELB.data) {
+                console.log('There is ELB response being retrieved');
+                console.log(responseELB.data.loadBalancers);
+            } else {
+                console.log('There is NO ELB response being retrieved');
+            }
+
+            if(responseELB.error) {
+                console.warn('ELB API call failed, using mock data', responseELB.error);
+
+                setLoadBalancersData(mockData);
+            } else {
+                console.log('No error, using real ELB data');
+                setLoadBalancersData(responseELB.data);
             }
 
         } catch (err) {
@@ -250,7 +287,7 @@ const useMockOrRealData = () => {
     }, []);
 
     // Return the values
-    return [ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, isLoading];
+    return [ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, isLoading];
 }
 
 export default useMockOrRealData;
