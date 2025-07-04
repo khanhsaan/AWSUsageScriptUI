@@ -1,5 +1,5 @@
 const mockData = {
-    region: 'us-east-1',
+    current_region: 'us-east-1',
     totalCost: 127.45,
     costPeriod: {start: '2024-01-01', end: '2024-01-31'},
     ec2Instances: [

@@ -34,6 +34,11 @@ const apiCall = async(endpoint, options = {}) => {
 }
 
 const awsResourceApi = {
+    // get current region
+    getAWSRegion: async () => {
+        return apiCall('/region')
+    },
+
     // get AWS Cost
     getAWSCosts: async () => {
         return apiCall('/costs')

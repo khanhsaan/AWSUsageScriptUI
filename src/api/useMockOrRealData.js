@@ -4,7 +4,9 @@ import apiService from "./apiService";
 
 const useMockOrRealData = () => {
     // const[data, setData] = useState(null);
-
+    // Region
+    const[regionData, setRegionData] = useState(null);
+    const[errorRegion, setErrorRegion] = useState(null);
     // Cost
     const[costData, setCostData] = useState(null);
     const[errorCost, setErrorCost] = useState(null);
@@ -103,6 +105,18 @@ const useMockOrRealData = () => {
         }
     }, [loadBalancersData]);
 
+    useEffect(() => {
+        if(regionData) {
+            console.log('REGION data has been set successfully');
+
+            if(regionData.current_region) {
+                console.log('REGION instance can be found')
+            }
+        } else {
+            console.log('REGION data has been set UNsuccessfully');
+        }
+    }, [regionData]);
+
 
     const[isLoading, setIsLoading] = useState(true);
     // const[useMockData, setUseMockData] = useState(false);
@@ -115,9 +129,40 @@ const useMockOrRealData = () => {
         setErrorEC2(null);
         setErrorRDS(null);
         setErrorCost(null);
+        setErrorRegion(null);
 
         // EC2 API calls
         try {
+
+            // REGION API calls ============================
+
+            // response = {
+            //      data, error
+            // }
+            console.log('Requesting RDS instances');
+            const responseRegion = await apiService.getAWSRegion();
+            
+            if(responseRegion.data) {
+                console.log('There is REGION response being retrieved');
+                console.log(responseRegion.data.current_region);
+            
+            } else {
+                console.log('There is NO REGION response being retrieved')
+            }
+
+            // If threre is error in the returned call
+            if(responseRegion.error){
+                console.warn('REGION API call failed, using mock data', responseRegion.error);
+
+                // Use mock data
+                setRegionData(mockData);
+            } else {
+                console.log('No error, using real REGION data');
+                // else use the real data
+                setRegionData(responseRegion.data);
+            }
+
+
             // EC2 API calls ===============================
 
             // response = {
@@ -287,7 +332,7 @@ const useMockOrRealData = () => {
     }, []);
 
     // Return the values
-    return [ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, isLoading];
+    return [regionData, errorRegion, ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, isLoading];
 }
 
 export default useMockOrRealData;

@@ -13,7 +13,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('overview');
 
   // Retrieve the values from useMockOrRealData.js
-  const[ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, isLoading] = useMockOrRealData();
+  const[regionData, errorRegion, ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, isLoading] = useMockOrRealData();
 
   // Set setIsLoading to false after 1.5 seconds to give the data some time to be retrieved properly
   // useEffect(() => {
@@ -42,7 +42,7 @@ function App() {
           <div className='header-left'>
             <h1> AWS Resource Monitor</h1>
             {/* Display region */}
-            <p>Region: <span className='region-badge'>{mockData.region}</span></p>
+            <p>Region: <span className='region-badge'>{regionData?.current_region || "Cannot retrieve current region"}</span></p>
           </div>
           <div className='header-right'>
             <div className='cost-summary'>
