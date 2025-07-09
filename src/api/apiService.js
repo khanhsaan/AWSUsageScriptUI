@@ -4,9 +4,13 @@ const apiCall = async(endpoint, options = {}) => {
     try{
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             headers: {
+                // Ensures the request specifies it is sending/expecting JSON data.
                 'Content-Type': 'application/json',
+
+                // Allows the caller to add or override headers via the options.headers object.
                 ...options.headers,
             },
+            // Spreads any other custom request configurations (like method, body, credentials, etc.) into the fetch call.
             ...options,
         });
 
@@ -33,15 +37,52 @@ const apiCall = async(endpoint, options = {}) => {
     }
 }
 
+const authcall = async(endpoint, credentials) => {
+    const options = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        // Specify the method: POST
+        method: 'POST',
+        // JSON format the passed credentials
+        body: JSON.stringify(credentials)
+    };
+
+    // Pass the endpoint and option to apiCall()
+    return await apiCall(endpoint, options);
+}
+
 const awsResourceApi = {
+    // configure AWS credentials
+    configureAWS: async (credentials) => {
+        // Map the passed credentials with the new specified attributes
+        const {access_key, secret_access_key, region} = credentials;
+
+        // Validate the credentials
+        if(!access_key || !secret_access_key || !region) {
+            return {
+                data: null,
+                // raise error
+                error: 'Missing required credentials: access_key, secret_access_key, and region are all required'
+            }
+        }
+        
+        // Pass the endpoint and mapped credentials to apiCall(), then wait and return its repsonse
+        return await authcall('/configure', {
+            access_key,
+            secret_access_key,
+            region
+        });
+    },
+
     // get current region
     getAWSRegion: async () => {
-        return apiCall('/region')
+        return await apiCall('/region')
     },
 
     // get AWS Cost
     getAWSCosts: async () => {
-        return apiCall('/costs')
+        return await apiCall('/costs')
     },
 
     // Get EC2 instances
