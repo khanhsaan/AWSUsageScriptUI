@@ -5,6 +5,8 @@ import mockData from './constants/MockData';
 import ServiceDetail from './components/ServiceDetails.js'
 import CostBar from './components/CostBar.js'
 import useMockOrRealData from './api/useMockOrRealData.js';
+import LoginForm from './components/login/LoginForm.js';
+import awsResourceApi from './api/apiService.js'
 
 // Base URL
 const API_BASE_URL = process.env.API_BASE_URL ?? "http://127.0.0.1:8000/api"
@@ -14,6 +16,34 @@ function App() {
 
   // Retrieve the values from useMockOrRealData.js
   const[regionData, errorRegion, ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, EBSData, errorEBS, EIPsData, errorEIPs, isLoading] = useMockOrRealData();
+
+  // Authenticate state
+  const[isAuthenticated, setIsAuthenticated] = useState(false);
+  // AWS credentials state
+  const [awsCredentials, setAwsCredentials] = useState({
+    access_key: '',
+    secret_access_key: '',
+    region: 'ap-southeast-2'
+  });
+
+  // Handle login
+  const handleLogin = async(credentials) => {
+    const response = await awsResourceApi.configureAWS(credentials);
+    if(response.error){
+      console.warn('AWS CONFIGURATION FAILED!');
+    }
+
+    if(response.data){
+      console.log('There is AWS CONFIGURATION response being retrieved!');
+      console.log('Message from backend: ' + response.data.sucess + "\n" + response.data.message);
+    }
+
+    setIsAuthenticated(true);
+  }
+
+  if(!isAuthenticated) {
+    return <LoginForm onLogin = {handleLogin}></LoginForm>
+  }
 
   // Set setIsLoading to false after 1.5 seconds to give the data some time to be retrieved properly
   // useEffect(() => {
