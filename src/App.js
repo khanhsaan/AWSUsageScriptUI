@@ -13,14 +13,15 @@ const API_BASE_URL = process.env.API_BASE_URL ?? "http://127.0.0.1:8000/api"
 
 function App() {
   const [activeTab, setActiveTab] = useState('overview');
-
-  // Retrieve the values from useMockOrRealData.js
-  const[regionData, errorRegion, ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, EBSData, errorEBS, EIPsData, errorEIPs, isLoading] = useMockOrRealData();
-
+  
   const[logginFailed, setLogginFailed] = useState(false);
 
   // Authenticate state
   const[isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Retrieve the values from useMockOrRealData.js
+  const[regionData, errorRegion, ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, EBSData, errorEBS, EIPsData, errorEIPs, isLoading] = useMockOrRealData(isAuthenticated);
+
   // AWS credentials state
   const [awsCredentials, setAwsCredentials] = useState({
     access_key: '',

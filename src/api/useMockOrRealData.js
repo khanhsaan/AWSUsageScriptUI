@@ -2,7 +2,7 @@ import { use, useEffect, useState } from "react"
 import mockData from "../constants/MockData";
 import apiService from "./apiService";
 
-const useMockOrRealData = () => {
+const useMockOrRealData = (isAuthenticated = false) => {
     // const[data, setData] = useState(null);
     // Region
     const[regionData, setRegionData] = useState(null);
@@ -404,8 +404,10 @@ const useMockOrRealData = () => {
 
     // Call fetchAWSData on mount
     useEffect(() => {
-        fetchAWSData();
-    }, []);
+        if(isAuthenticated){
+            fetchAWSData();
+        }
+    }, [isAuthenticated]);
 
     // Return the values
     return [regionData, errorRegion, ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, EBSData, errorEBS, EIPsData, errorEIPs, isLoading];
