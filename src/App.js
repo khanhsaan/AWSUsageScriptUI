@@ -17,6 +17,8 @@ function App() {
   // Retrieve the values from useMockOrRealData.js
   const[regionData, errorRegion, ec2Data, errorEC2, rdsData, errorRDS, costData, errorCost, s3Data, errorsS3,lambdaData, errorLambda, loadBalancersData, errorLoadBalancers, EBSData, errorEBS, EIPsData, errorEIPs, isLoading] = useMockOrRealData();
 
+  const[logginFailed, setLogginFailed] = useState(false);
+
   // Authenticate state
   const[isAuthenticated, setIsAuthenticated] = useState(false);
   // AWS credentials state
@@ -28,22 +30,56 @@ function App() {
 
   // Handle login
   const handleLogin = async(credentials) => {
+    // Get the repsonse from the api service
     const response = await awsResourceApi.configureAWS(credentials);
+
+    // If there is error
     if(response.error){
       console.warn('AWS CONFIGURATION FAILED!');
     }
-
+    
+    // If there is data being retrieved
     if(response.data){
       console.log('There is AWS CONFIGURATION response being retrieved!');
       console.log('Message from backend: ' + response.data.sucess + "\n" + response.data.message);
+
+      // If the success is false, return false success state to the caller
+      if(response.data.success === false){
+        console.log("LOG IN FAILED!")
+        return {
+          success: false,
+          error: response.data.message || 'Authentication failed!'
+        }
+      }
     }
-
-    setIsAuthenticated(true);
+    if(logginFailed){
+      setIsAuthenticated(false);
+    } else {
+      setIsAuthenticated(true);
+    }
   }
 
+  // Handle log out
+  const handleLogOut = () => {
+    setIsAuthenticated(false);
+
+    setAwsCredentials({
+      access_key: '',
+      secret_access_key: '',
+      region: 'ap-southeast-2'
+    });
+
+    console.log('User logged out successfully!');
+  }
+
+  // LOGIN STATE
   if(!isAuthenticated) {
-    return <LoginForm onLogin = {handleLogin}></LoginForm>
+    return <LoginForm 
+              onLogin = {handleLogin} 
+              onLoginStatus={(status) => setLogginFailed(status.success)}>
+          </LoginForm>
   }
+
 
   // Set setIsLoading to false after 1.5 seconds to give the data some time to be retrieved properly
   // useEffect(() => {
@@ -80,6 +116,14 @@ function App() {
               <h2>${costData.totalCost.toFixed(2)}</h2>
               <p>Total Cost This Month</p>
             </div>
+            
+            {/* Log out button */}
+            <button
+              className='logout-btn'
+              onClick={handleLogOut}
+              title="Logout">
+                Logout
+              </button>
           </div>
         </div>
       </header>

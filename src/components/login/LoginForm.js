@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function LoginForm({ onLogin }) {
+function LoginForm({ onLogin, onLoginStatus }) {
     const[credentials, setCredentials] = useState({
         access_key: '',
         secret_access_key: '',
@@ -11,6 +11,7 @@ function LoginForm({ onLogin }) {
     const[error, setError] = useState('');
     // The user can have option to see the password or not
     const[showSecret, setShowSecret] = useState(false);
+    const[logginFailed, setLogginFailed] = useState(false);
     
     const handleInputChange = (e) => {
         // e.target refers to the DOM element that triggered the change event.
@@ -48,7 +49,7 @@ function LoginForm({ onLogin }) {
 
         // The user is logging in
         setIsLoggingIn(true);
-        // The error is empty
+        // The error is emptylogginFailed
         setError('');
 
         try {
@@ -56,7 +57,22 @@ function LoginForm({ onLogin }) {
             await new Promise(resolve => setTimeout(resolve, 1000));
             
             // Pass the credentials from the user input to the passed function
-            onLogin(credentials);
+            const response = await onLogin(credentials);
+
+            
+            if(response && response.success === false){
+                setError(response.error || 'Login failed, please try again...');
+                setLogginFailed(true);
+
+                // The line onLoginStatus?.({success: false, error: response.error}); is using optional chaining (?.) to call the onLoginStatus function if it is defined. It passes an object with success: false and error: response.error as arguments.
+                onLoginStatus?.({success: false, error: response.error});
+            } else {
+                setLogginFailed(false);
+                onLoginStatus?.({success: true, error: null});
+            }
+
+            
+            
         } catch (error) {
             setError('Failed to authenticate. Please check your credentials');
         } finally {
